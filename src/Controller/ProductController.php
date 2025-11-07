@@ -2,18 +2,28 @@
 
 namespace App\Controller;
 
+use Monolog\Logger;
 use App\Entity\Product;
 use App\Form\ProductType;
+use Psr\Log\LoggerInterface;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/product')]
 final class ProductController extends AbstractController
 {
+
+    private Logger $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     #[Route(name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
@@ -40,6 +50,8 @@ final class ProductController extends AbstractController
             'product' => $product,
             'form' => $form,
         ]);
+
+        #$this->logger->info("Un nouveau produit a été créé : {$product->getName()}");
     }
 
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
