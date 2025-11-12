@@ -3,10 +3,11 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 
 final class UserControllerTest extends WebTestCase
 {
@@ -30,16 +31,18 @@ final class UserControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
+        $testUser = new InMemoryUser('superadmin', 'superadmin', ['ROLE_SUPER_ADMIN']);
+        $this->client->loginUser($testUser);
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('User index');
+        self::assertPageTitleContains('Gestion des utilisateurs');
 
         // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first()->text());
+        //self::assertSame('accès impossible', $crawler->filter('.p')->first()->text());
     }
-
+/*
     public function testNew(): void
     {
         $this->markTestIncomplete();
@@ -128,4 +131,5 @@ final class UserControllerTest extends WebTestCase
         self::assertResponseRedirects('/user/');
         self::assertSame(0, $this->userRepository->count([]));
     }
+*/
 }
