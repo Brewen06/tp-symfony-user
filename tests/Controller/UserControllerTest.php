@@ -31,7 +31,7 @@ final class UserControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
-        $testUser = new InMemoryUser('superadmin', 'superadmin', ['ROLE_SUPER_ADMIN']);
+        $testUser = new InMemoryUser('user', 'user', ['ROLE_USER']);
         $this->client->loginUser($testUser);
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $this->path);
