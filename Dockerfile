@@ -32,7 +32,7 @@ RUN composer install --optimize-autoloader --no-interaction --no-scripts --dev
 # --- Configuration de l'environnement ---
 
 # 1. On s'assure que PHP-FPM écoute bien sur localhost, car Nginx est dans le même conteneur.
-RUN sed -i "s/listen = 9000/listen = 127.0.0.1:9000/" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/listen = 8000/listen = 127.0.0.1:8000/" /usr/local/etc/php-fpm.d/www.conf
 
 # 2. On copie nos fichiers de configuration personnalisés
 COPY nginx.conf /etc/nginx/sites-available/default
@@ -50,3 +50,4 @@ EXPOSE 80
 
 # On lance notre script d'entrée qui va gérer le démarrage
 ENTRYPOINT ["entrypoint.sh"]
+
